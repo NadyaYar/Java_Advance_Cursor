@@ -13,48 +13,24 @@ public class Student {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
     public void setFirstName(String firstName) {
         this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
     }
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
-    public int getFacultyId() {
-        return facultyId;
-    }
-
     public void setFacultyId(int facultyId) {
         this.facultyId = facultyId;
-    }
-
-    public int getSpecialtyId() {
-        return specialtyId;
     }
 
     public void setSpecialtyId(int specialtyId) {
         this.specialtyId = specialtyId;
     }
 
-    public int getCourse() {
-        return course;
-    }
-
     public void setCourse(int course) {
         this.course = course;
-    }
-
-    public double getGpa() {
-        return gpa;
     }
 
     public void setGpa(int gpa) {
