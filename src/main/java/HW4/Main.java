@@ -7,6 +7,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Main {
+    private static final String QUERY_FIND_BY_LETTER = "SELECT * FROM \"STUDENTS\" WHERE \"last_name\" LIKE 'P%'";
+    private static final String QUERY_ORDER_BY_NAME = "SELECT DISTINCT * FROM \"SPECIALTY\" ORDER BY NAME";
+    private static final String QUERY_LIMIT = "SELECT * FROM \"FACULTIES\" LIMIT 3";
+    private static final String QUERY_FIND_BY_COURSE_FACULTY_GPA = "SELECT * FROM \"STUDENTS\" WHERE \"course\" > ? AND \"faculty_id\" > ? AND NOT \"gpa\"< ?";
+    private static final String QUERY_FIND_BY_GPA_COURSE = "SELECT * FROM \"STUDENTS\" WHERE \"gpa\" > ? AND \"course\" > ?";
+
     public static void main(String[] args) {
         String url = "jdbc:postgresql://localhost:5432/University";
         String userName = "postgres";
@@ -16,7 +22,7 @@ public class Main {
             DriverManager.registerDriver(new SQLServerDriver());
             Connection connection = DriverManager.getConnection(url, userName, password);
             Statement statement = connection.createStatement();
-            ResultSet resultSet2 = statement.executeQuery("SELECT * FROM \"STUDENTS\" WHERE \"last_name\" LIKE 'P%'");
+            ResultSet resultSet2 = statement.executeQuery(QUERY_FIND_BY_LETTER);
             List<Student> studentList = new LinkedList<>();
             while (resultSet2.next()) {
                 Student student = buildStudentExpanded(resultSet2);
@@ -34,7 +40,7 @@ public class Main {
         try {
             Connection connection = DriverManager.getConnection(url, userName, password);
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT DISTINCT * FROM \"SPECIALTY\" ORDER BY NAME");
+            ResultSet resultSet = statement.executeQuery(QUERY_ORDER_BY_NAME);
 
             List<Specialty> specialties = new LinkedList<>();
             while (resultSet.next()) {
@@ -53,7 +59,7 @@ public class Main {
         try {
             Connection connection = DriverManager.getConnection(url, userName, password);
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM \"FACULTIES\" LIMIT 3");
+            ResultSet resultSet = statement.executeQuery(QUERY_LIMIT);
 
             List<Faculty> faculties = new LinkedList<>();
             while (resultSet.next()) {
@@ -73,7 +79,7 @@ public class Main {
         try {
             Connection connection = DriverManager.getConnection(url, userName, password);
             Statement statement = connection.createStatement();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM \"STUDENTS\" WHERE \"course\" > ? AND \"faculty_id\" > ? AND NOT \"gpa\"< ?");
+            PreparedStatement preparedStatement = connection.prepareStatement(QUERY_FIND_BY_COURSE_FACULTY_GPA);
 
             preparedStatement.setInt(1, 1);
             preparedStatement.setInt(2, 2);
@@ -98,7 +104,7 @@ public class Main {
         try {
             Connection connection = DriverManager.getConnection(url, userName, password);
             Statement statement = connection.createStatement();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM \"STUDENTS\" WHERE \"gpa\" > ? AND \"course\" > ?");
+            PreparedStatement preparedStatement = connection.prepareStatement(QUERY_FIND_BY_GPA_COURSE);
 
             preparedStatement.setInt(1, 85);
             preparedStatement.setInt(2, 1);
@@ -131,7 +137,6 @@ public class Main {
 
         return student;
     }
-
 
     private static Faculty buildFacultyIdName(ResultSet resultSet) throws SQLException {
         Faculty faculty = new Faculty();
